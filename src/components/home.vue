@@ -55,7 +55,7 @@ export default {
     let formStyle = document.querySelector('.form')
     let carouselStyle = document.querySelector('.carousel')
     let imagesCarStyle = document.getElementsByClassName('imagesCar')
-    console.log('formStyle',formStyle)
+
     if(this.flag === false){
       formStyle.style.width = '100%'
       carouselStyle.style.width = '100%'
@@ -67,10 +67,10 @@ export default {
   },
   methods: {
     handleClick() {
-      let httpURL = `/api/list?carNumber=${this.form.carNumber}`; //目标地址后接的详细地址
+      let httpURL = `/api/list?carNumber=${this.form.carNumber}`;
       let self = this
       axios.get(httpURL).then(function (res) {
-        console.log(res,res)
+
         if(res.status == 200){
           if(res.data.result && res.data.result.length=== 1){
             let info = res.data.result[0]

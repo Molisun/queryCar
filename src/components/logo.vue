@@ -45,6 +45,11 @@
           align="center">
         </el-table-column>
         <el-table-column
+          prop="submitTime"
+          label="提交时间"
+          align="center">
+        </el-table-column>
+        <el-table-column
           fixed="right"
           label="操作"
           width="100">
@@ -60,34 +65,41 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "logo",
   data(){
     return{
       mail: '',
-      tableData:[
-        {
-          id:'1',
-          name: '王小虎',
-          contract: '138XXXX1234',
-          describe: '上海市普陀区金沙江路 1518 弄'
-        },
-        {
-          id:'2',
-          name: '王大虎',
-          contract: '138XXXX1234',
-          describe: '上海市普陀区金沙江路 1518 弄'
-        },
-        {
-          id:'3',
-          name: '王中虎',
-          contract: '138XXXX1234',
-          describe: '上海市普陀区金沙江路 1518 弄'
-        }
-      ]
+      tableData:[]
     }
   },
+  mounted() {
+    this.query()
+  },
   methods: {
+    query(){
+      let httpURL = `/api/listAfter`;
+      let self = this
+      this.tableData = []
+      axios.get(httpURL).then(function (res) {
+
+        if(res.status == 200){
+          if(res.data.result.length){
+            let info = res.data.result
+            info.map(i=>{
+              self.tableData.push(i)
+            })
+          }else{
+            self.$message.error(res.data.msg);
+          }
+        }else{
+
+        }
+      })
+    },
+
     handleClickMail(){
       this.$notify({
         title: '发送成功',
@@ -96,12 +108,7 @@ export default {
       });
     },
     handleClick(val){
-      let delIndex
-      this.tableData.map((i,index)=>{
-        if(i.id === val.id){
-          delIndex = index
-        }
-      })
+      let id = val.id
       let self = this
       this.$confirm("是否确认删除?", "提示", {
         iconClass: "el-icon-question", //自定义图标样式
@@ -110,7 +117,18 @@ export default {
         showClose: true, //是否显示右上角关闭按钮
         type: "danger", //提示类型  success/info/warning/error
       }).then(function () {
-          self.tableData.splice(delIndex,1)
+
+        let httpURL = `/api/delAfter?id=${id}`;
+        axios.get(httpURL).then(function (res) {
+
+          if(res.status == 200){
+            if(res.data.code == 200){
+              self.query()
+              self.$message.success('删除成功');
+            }
+          }
+        })
+
         }).catch(function (err) {
           console.log(err);
         });

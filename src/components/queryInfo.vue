@@ -22,7 +22,7 @@
           </span>
         </el-col>
         <el-col :span="18">
-          <el-input v-model="form[item.code]" :placeholder="'请输入'+item.name"></el-input>
+          <el-input v-model="afterMarketForm[item.code]" :placeholder="'请输入'+item.name"></el-input>
         </el-col>
       </el-row>
       <div style="margin-bottom: 6px">
@@ -49,7 +49,25 @@
 
 <script>
 import {IsPC} from "@/components/common";
-
+import axios from "axios";
+Date.prototype.format = function(format) {
+  var o = {
+    "M+" : this.getMonth()+1, //month
+    "d+" : this.getDate(),    //day
+    "h+" : this.getHours(),   //hour
+    "m+" : this.getMinutes(), //minute
+    "s+" : this.getSeconds(), //second
+    "q+" : Math.floor((this.getMonth()+3)/3),  //quarter
+    "S" : this.getMilliseconds() //millisecond
+  }
+  if(/(y+)/.test(format)) format=format.replace(RegExp.$1,
+    (this.getFullYear()+"").substr(4 - RegExp.$1.length));
+  for(var k in o)if(new RegExp("("+ k +")").test(format))
+    format = format.replace(RegExp.$1,
+      RegExp.$1.length==1 ? o[k] :
+        ("00"+ o[k]).substr((""+ o[k]).length));
+  return format;
+}
 export default {
   name: "queryInfo",
   data(){
@@ -105,8 +123,8 @@ export default {
 
       afterMarketForm: {
         name: '',
-        contract: '',
-        describe: ''
+        mobilePhone: '',
+        problem: ''
       },
       afterMarket: [
         {
@@ -115,11 +133,11 @@ export default {
         },
         {
           name: '联系方式',
-          code: 'contract',
+          code: 'mobilePhone',
         },
         {
           name: '问题描述',
-          code: 'describe',
+          code: 'problem',
         },
       ],
       afterOpen: false,
@@ -174,7 +192,31 @@ export default {
       this.afterOpen = true
     },
     handleClickAfter(){
-      this.$router.push({path:'/thanks'})
+
+      let nowTime = new Date()
+      let submitTime = nowTime.format('yyyy-MM-dd hh:mm:ss')
+
+      let self = this
+      axios({
+        url: "/api/addAfter",
+        method: "POST",
+        params: {
+          ...this.afterMarketForm,
+          submitTime: submitTime,
+          isDelete: 'false',
+        }
+      }).then(function (res) {
+        if(res.status == 200) {
+          if (res.data.code == 200) {
+
+            self.$message.success('提交售后信息成功');
+            self.$router.push({path:'/thanks'})
+          }else{
+            self.$message.success('提交失败');
+          }
+        }
+      })
+
     },
   }
 }
