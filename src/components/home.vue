@@ -30,6 +30,8 @@
 
 <script>
 import {IsPC} from "@/components/common";
+import request from "../request";
+import axios from "axios";
 
 export default {
   name: 'home',
@@ -65,7 +67,22 @@ export default {
   },
   methods: {
     handleClick() {
-      this.$router.push({path:'/queryInfo'})
+      let httpURL = `/api/list?carNumber=${this.form.carNumber}`; //目标地址后接的详细地址
+      let self = this
+      axios.get(httpURL).then(function (res) {
+        console.log(res,res)
+        if(res.status == 200){
+          if(res.data.result && res.data.result.length=== 1){
+            let info = res.data.result[0]
+            self.$store.commit('setInfo', info)
+            self.$router.push({path:'/queryInfo'})
+            self.$message.success('查询成功');
+          }else{
+            self.$message.error(res.data.msg + '.请重新检查车牌号，或联系客服');
+          }
+        }else{
+        }
+      });
     }
   }
 }

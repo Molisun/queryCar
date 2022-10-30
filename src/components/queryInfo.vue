@@ -164,6 +164,10 @@ export default {
         formLabelStyle[i].style.fontSize = '14px'
       }
     }
+
+    this.form = this.$store.state.info
+    this.form.price = this.form.price ? this.form.price + "元" : ''
+    this.form.timeLimit = this.form.timeLimit ? this.form.timeLimit + "年" : ''
   },
   methods: {
     handleClick(){
