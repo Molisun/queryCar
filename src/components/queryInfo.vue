@@ -11,7 +11,7 @@
       </el-col>
     </el-row>
     <div style="margin-bottom: 6px">
-      <el-button type="primary" @click="handleClick">点击查询</el-button>
+      <el-button type="primary" @click="handleClick">提交问题</el-button>
     </div>
 
     <div v-show="afterOpen">
@@ -66,36 +66,40 @@ export default {
       },
       field: [
         {
-          name: '品名',
-          code: 'waresName',
+          name: '产品型号',
+          code: 'productModel',
         },
         {
-          name: '施工项目',
-          code: 'project',
+          name: '贴车价格',
+          code: 'price',
+        },
+        {
+          name: '施工时间',
+          code: 'constructionTime',
         },
         {
           name: '质保期限',
-          code: 'warranty',
+          code: 'timeLimit',
         },
         {
           name: '车牌号',
           code: 'carNumber',
         },
         {
-          name: '车架号',
-          code: 'verification',
+          name: '车辆识别码',
+          code: 'identificationNumber',
         },
         {
-          name: '渠道商',
-          code: 'provider',
+          name: '车型',
+          code: 'model',
         },
         {
           name: '施工单位',
-          code: 'company',
+          code: 'constructionUnit',
         },
         {
-          name: '施工完成图',
-          code: 'finished',
+          name: '施工图',
+          code: 'constructionImage',
         },
       ],
 
@@ -128,12 +132,12 @@ export default {
       currentTag: '免责声明',
       tagInfo: {
         '免责声明': [
-          "1.因天灾、外力或强酸碱物体等因素导致的车体、膜面损伤及不正确的保养方式造成的产品损伤，KTN及施工单位将不承担任何责任。",
-          "2.去除膜时，应由施工单位进行专业去除，由车主擅自去处操作引起的膜体损坏或漆面损伤，KTN及施工单位将不承担任何责任。",
+          "1.因天灾、外力或强酸碱物体等因素导致的车体、膜面损伤及不正确的保养方式造成的产品损伤，施工单位将不承担任何责任。",
+          "2.去除膜时，应由施工单位进行专业去除，由车主擅自去处操作引起的膜体损坏或漆面损伤，施工单位将不承担任何责任。",
           "3.对人为造成的划痕或破损可由施工单位对破损部位进行局部修复或更换，将酌情收 取工本费"
         ],
         '质保内容': [
-          "KTN在产品施工后，根据产品所属的分类，在对应的统一质保时间内提供以下质量保证:",
+          "施工单位在产品施工后，根据产品所属的分类，在对应的统一质保时间内提供以下质量保证:",
           "1.保证膜的自身附着性能，不产生非触碰变形、分层或自然脱离车体。",
           "2.保证膜面外观不产生明显的太阳光照褪色现象。",
           "3.保证膜与漆面剥离时几乎不留残胶，原厂漆无脱落损伤(漆面二次喷涂部分发生脱落或损伤，不在保证范围内，以权威机构漆面成份检测结果为准)"
@@ -224,14 +228,16 @@ export default {
   background-color: #F56C6C;
   border-color: #F56C6C;
   color: #fff;
+  -webkit-box-shadow: unset;
+  box-shadow: unset;
 }
 
 .el-radio-button {
-  margin: 0 10px;
+margin: 0 10px;
 }
 .h5TagInfo{
-  text-align: left;
-  margin: 5px 0;
+text-align: left;
+margin: 5px 0;
 }
 
 </style>

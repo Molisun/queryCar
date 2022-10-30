@@ -37,16 +37,11 @@ export default {
     return {
       form: {
         carNumber: '',//车牌号
-        verification: '',//核验码
       },
       field: [
         {
           name: '车牌号',
           code: 'carNumber',
-        },
-        {
-          name: '核验码',
-          code: 'verification',
         }
       ]
     }
