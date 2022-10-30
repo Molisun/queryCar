@@ -34,13 +34,13 @@
           width="200px">
         </el-table-column>
         <el-table-column
-          prop="contract"
+          prop="mobilePhone"
           label="联系方式"
           align="center"
           width="200px">
         </el-table-column>
         <el-table-column
-          prop="describe"
+          prop="problem"
           label="问题描述"
           align="center">
         </el-table-column>
