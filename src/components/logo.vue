@@ -263,8 +263,7 @@ export default {
       // 把文件添加到 FormData对象里
       param.append("constructionImage", file);
       this.form.constructionTime = this.form.constructionTime.format('yyyy-MM-dd')
-      console.log(this.form)
-      return;
+
       for (const key in this.form) {
         param.append(key, this.form[key]);
       }
