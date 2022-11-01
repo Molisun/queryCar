@@ -8,7 +8,7 @@
       </el-col>
       <el-col :span="18">
         <el-input v-if="item.code !== 'constructionImage'" v-model="form[item.code]" :placeholder="'请输入'+item.name"></el-input>
-        <img v-else-if="item.code === 'constructionImage'" :src="'http://127.0.0.1:3000/' + form[item.code]" alt="" style="max-width: 200px;max-height: 200px"/>
+        <img v-else-if="item.code === 'constructionImage'" :src="'/api' + form[item.code]" alt="" style="max-width: 200px;max-height: 200px"/>
       </el-col>
     </el-row>
     <div style="margin-bottom: 6px">
