@@ -7,7 +7,8 @@
           </span>
       </el-col>
       <el-col :span="18">
-        <el-input v-model="form[item.code]" :placeholder="'请输入'+item.name"></el-input>
+        <el-input v-if="item.code !== 'constructionImage'" v-model="form[item.code]" :placeholder="'请输入'+item.name"></el-input>
+        <img v-else-if="item.code === 'constructionImage'" :src="'http://127.0.0.1:3000/' + form[item.code]" alt="" style="max-width: 200px;max-height: 200px"/>
       </el-col>
     </el-row>
     <div style="margin-bottom: 6px">
@@ -72,16 +73,7 @@ export default {
   name: "queryInfo",
   data(){
     return{
-      form: {
-        waresName: '',
-        project: '',
-        warranty: '',
-        carNumber: '',
-        verification: '',
-        provider: '',
-        company: '',
-        finished: '',
-      },
+      form: {},
       field: [
         {
           name: '产品型号',
@@ -188,9 +180,16 @@ export default {
     this.form.timeLimit = this.form.timeLimit ? this.form.timeLimit + "年" : ''
   },
   methods: {
+    /*
+    **提交问题
+     */
     handleClick(){
       this.afterOpen = true
     },
+
+    /*
+    **售后申请
+     */
     handleClickAfter(){
 
       let nowTime = new Date()
