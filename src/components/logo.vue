@@ -272,8 +272,13 @@ export default {
           headers: { "Content-Type": "multipart/form-data" },
         })
         .then((res) => {
-          console.log(res)
-          // self.queryImage()
+          if(res.status == 200) {
+            if (res.data.code == 200) {
+              self.$message.success(res.data.msg)
+            }else{
+              self.$message.error(res.data.msg)
+            }
+          }
         });
     },
 
