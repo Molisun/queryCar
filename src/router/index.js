@@ -1,33 +1,29 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import home from '@/components/home'
-import queryInfo from "../components/queryInfo";
-import logo from "../components/logo";
-import thanks from "@/components/thanks";
+// import Vue from 'vue'
+// import Router from 'vue-router'
 
-Vue.use(Router)
+Vue.use(VueRouter)
 
-export default new Router({
+export default new VueRouter({
   routes: [
     {
       path: '/',
       name: '首页',
-      component: home
+      component: resolve =>require(['@/components/home'],resolve)
     },
     {
       path: '/queryInfo',
       name: '查询信息',
-      component: queryInfo
+      component: resolve =>require(['@/components/queryInfo'],resolve)
     },
     {
       path: '/thanks',
       name: '查询信息',
-      component: thanks
+      component: resolve =>require(['@/components/logo'],resolve)
     },
     {
       path: '/logo',
       name: '后台日志',
-      component: logo
+      component: resolve =>require(['@/components/thanks'],resolve)
     }
   ]
 })

@@ -30,7 +30,6 @@
 
 <script>
 import {IsPC} from "@/components/common";
-import request from "../request";
 import axios from "axios";
 
 export default {

@@ -3,14 +3,16 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import ElementUI from 'element-ui';
+// import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css'; //样式文件需要单独引入。
 
 import store from './store'
 import Vuex from 'vuex'
 
+
 Vue.config.productionTip = false
-Vue.use(ElementUI)
+
+// Vue.use(ElementUI)
 Vue.use(Vuex)
 
 /* eslint-disable no-new */
