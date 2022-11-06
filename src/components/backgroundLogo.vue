@@ -2,7 +2,16 @@
   <div>
     <div class="title">后台管理</div>
 
-    <el-tabs type="border-card" v-model="activeName" @tab-click="handleTabsClick" stretch>
+    <el-row style="width: 1200px;margin: auto" v-if="!isPassword">
+      <el-col :span="4">
+        管理员密码：
+      </el-col>
+      <el-col :span="20">
+        <el-input v-model="password" placeholder="请输入管理员密码" show-password @change="handlePassword"></el-input>
+      </el-col>
+    </el-row>
+
+    <el-tabs type="border-card" v-model="activeName" @tab-click="handleTabsClick" stretch v-if="isPassword">
 
       <el-tab-pane label="售后记录表格" name="first">
 
@@ -73,7 +82,7 @@
                 {{item.name}}：
               </span>
             </el-col>
-            <el-col :span="18">
+            <el-col :span="17">
               <el-date-picker
                 v-if="item.code ==='constructionTime'"
                 v-model="form[item.code]"
@@ -83,10 +92,15 @@
               <el-input v-model="form[item.code]" :placeholder="'请输入'+item.name" v-else-if="item.code !=='constructionImage'"></el-input>
               <input type="file" id="file" @change="handleImageAdd($event)" v-else-if="item.code ==='constructionImage'"></input>
             </el-col>
+            <el-col :span="1" style="height: 40px">
+              <el-tooltip class="item" effect="dark" :content="tips[item.code]" placement="top" v-if="item.code == 'price' || item.code == 'timeLimit' || item.code == 'carNumber'">
+                <i class="el-icon-info" style="color: #67C23A"></i>
+              </el-tooltip>
+            </el-col>
           </el-row>
           <div>
             <i class="el-icon-info" style="color: #67C23A"></i>
-            <span>选择文件后自动完成信息录入</span>
+            <span>请选择图片文件，选择后自动完成信息录入</span>
           </div>
         </div>
 
@@ -121,9 +135,11 @@ Date.prototype.format = function(format) {
   return format;
 }
 export default {
-  name: "logo",
+  name: "backgroundLogo",
   data(){
     return{
+      password: "",
+      isPassword: false,
       activeName: 'first',
       tableData:[],
       form: {
@@ -148,6 +164,11 @@ export default {
         {name: '施工单位', code: 'constructionUnit',},
         {name: '施工完成图', code: 'constructionImage',},
       ],
+      tips: {
+        price: '默认单位为“元”，比如，你可以输入1000，则查询后显示“1000元”；你也可以输入“1千”，则查询后显示“1千元”。',
+        timeLimit: '默认单位为“年”，比如，你可以输入10，则查询后显示“10年”。',
+        carNumber: '车牌号请大写输入，且不能重复录入相同车牌号的质保信息。',
+      }
     }
   },
   mounted() {
@@ -155,6 +176,12 @@ export default {
   },
   methods: {
     handleTabsClick(){},
+    /*
+    **验证密码
+     */
+    handlePassword(){
+      this.isPassword = this.password == this.$Constants.password
+    },
     /*
     **查询售后记录
      */
