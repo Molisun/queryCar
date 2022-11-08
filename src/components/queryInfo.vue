@@ -1,48 +1,54 @@
 <template>
   <div class="form">
-    <el-row v-for="item in field" :key="item.code">
-      <el-col :span="6">
-          <span class="formLabel">
-            {{item.name}}：
-          </span>
-      </el-col>
-      <el-col :span="18">
-        <el-input v-if="item.code !== 'constructionImage'" v-model="form[item.code]" :placeholder="'请输入'+item.name"></el-input>
-        <img v-else-if="item.code === 'constructionImage'" :src="'/api' + form[item.code]" alt="" style="max-width: 200px;max-height: 200px"/>
-      </el-col>
-    </el-row>
-    <div style="margin-bottom: 6px">
-      <el-button type="primary" @click="handleClick">提交问题</el-button>
-    </div>
-
-    <div v-show="afterOpen">
-      <el-row v-for="item in afterMarket" :key="item.code">
+    <div v-if="!isTag">
+      <el-row v-for="item in field" :key="item.code">
         <el-col :span="6">
           <span class="formLabel">
             {{item.name}}：
           </span>
         </el-col>
         <el-col :span="18">
-          <el-input v-model="afterMarketForm[item.code]" :placeholder="'请输入'+item.name"></el-input>
+          <el-input v-if="item.code !== 'constructionImage'" v-model="form[item.code]" :placeholder="'请输入'+item.name"></el-input>
+          <img v-else-if="item.code === 'constructionImage'" :src="'/api/' + form[item.code]" alt="" style="max-width: 200px;max-height: 200px"/>
         </el-col>
       </el-row>
       <div style="margin-bottom: 6px">
-        <el-button type="primary" @click="handleClickAfter">售后申请</el-button>
+        <el-button type="primary" @click="handleClick">提交问题</el-button>
       </div>
+
+      <div v-show="afterOpen">
+        <el-row v-for="item in afterMarket" :key="item.code">
+          <el-col :span="6">
+          <span class="formLabel">
+            {{item.name}}：
+          </span>
+          </el-col>
+          <el-col :span="18">
+            <el-input v-if="item.code !== 'mobilePhone'" v-model="afterMarketForm[item.code]" :placeholder="'请输入'+item.name" ></el-input>
+            <el-input v-else-if="item.code == 'mobilePhone'"v-model="afterMarketForm[item.code]" :placeholder="'请输入'+item.name" oninput ="value=value.replace(/[^\d]/g,'')"></el-input>
+          </el-col>
+        </el-row>
+        <div style="margin-bottom: 6px">
+          <el-button type="primary" @click="handleClickAfter">售后申请</el-button>
+        </div>
+      </div>
+      <el-divider></el-divider>
     </div>
 
-    <el-divider></el-divider>
-
     <div>
-      <el-radio-group v-model="currentTag">
+      <el-radio-group v-model="currentTag" @change="handleTag">
         <el-radio-button label="免责声明"></el-radio-button>
         <el-radio-button label="质保内容"></el-radio-button>
         <el-radio-button label="保养方法"></el-radio-button>
       </el-radio-group>
 
-      <div>
+      <el-divider v-if="isTag"></el-divider>
+
+      <div v-if="isTag">
         <h5 v-for="item in tagInfo[currentTag]" class="h5TagInfo">{{item}}</h5>
+        <el-button type="primary" @click="handleTagClose">返回提交</el-button>
       </div>
+
     </div>
 
   </div>
@@ -139,7 +145,8 @@ export default {
         { type: '', label: '质保内容' },
         { type: 'success', label: '保养方法' },
       ],
-      currentTag: '免责声明',
+      currentTag: '',
+      isTag: false,
       tagInfo: {
         '免责声明': [
           "1.因天灾、外力或强酸碱物体等因素导致的车体、膜面损伤及不正确的保养方式造成的产品损伤，施工单位将不承担任何责任。",
@@ -187,6 +194,19 @@ export default {
       this.afterOpen = true
     },
 
+    handleTag(){
+      this.isTag = true
+    },
+
+    handleTagClose(){
+      this.isTag = false
+      this.currentTag = ""
+    },
+
+    handleCheck(val){
+
+    },
+
     /*
     **售后申请
      */
@@ -195,6 +215,12 @@ export default {
       let nowTime = new Date()
       let submitTime = nowTime.format('yyyy-MM-dd hh:mm:ss')
 
+      for (const key in this.afterMarketForm) {
+        if(this.afterMarketForm[key] == ""){
+          this.$message.warning("请输入姓名，联系方式，问题描述")
+          return
+        }
+      }
       let self = this
       axios({
         url: "/api/addAfter",
@@ -275,6 +301,9 @@ export default {
   color: #fff;
   -webkit-box-shadow: unset;
   box-shadow: unset;
+}
+/deep/ .el-radio-button__inner:hover {
+  color: #F56C6C;
 }
 
 .el-radio-button {

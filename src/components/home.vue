@@ -38,12 +38,17 @@ export default {
     return {
       form: {
         carNumber: '',//车牌号
+        identificationNumber: '',//车架号
       },
       field: [
         {
           name: '车牌号',
           code: 'carNumber',
-        }
+        },
+        {
+          name: '车架号',
+          code: 'identificationNumber',
+        },
       ]
     }
   },
@@ -66,9 +71,18 @@ export default {
   },
   methods: {
     handleClick() {
-      let httpURL = `/api/list?carNumber=${this.form.carNumber}`;
+      let params = {
+        carNumber: this.form.carNumber.toUpperCase(),
+        identificationNumber: this.form.identificationNumber.toUpperCase()
+      }
       let self = this
-      axios.get(httpURL).then(function (res) {
+      axios({
+        url: "/api/list",
+        method: "GET",
+        params: {
+          ...params
+        }
+      }).then(function (res) {
 
         if(res.status == 200){
           if(res.data.result && res.data.result.length=== 1){
@@ -77,7 +91,7 @@ export default {
             self.$router.push({path:'/queryInfo'})
             self.$message.success('查询成功');
           }else{
-            self.$message.error(res.data.msg + '.请重新检查车牌号，或联系客服');
+            self.$message.error(res.data.msg + '.请重新检查车牌号或车架号，或联系客服');
           }
         }else{
         }
